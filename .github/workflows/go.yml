@@ -1,12 +1,12 @@
-name: Go
+name: XDUPile Script
 
 on:
   schedule:
-    - cron: 12 1 * * *
+    - cron: 40,45 3 * * *
 
 jobs:
 
-  HealthCard:
+  Build_and_Run:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
