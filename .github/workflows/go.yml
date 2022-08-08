@@ -2,7 +2,11 @@ name: XDUPile Script
 
 on:
   schedule:
-    - cron: 47,50 3 * * *
+    - cron: 30,59 4 * * *
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
 
