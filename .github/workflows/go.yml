@@ -2,7 +2,7 @@ name: XDUPile Script
 
 on:
   schedule:
-    - cron: 40,45 3 * * *
+    - cron: 47,50 3 * * *
 
 jobs:
 
