@@ -3,8 +3,6 @@ name: XDUPile Script
 on:
   schedule:
     - cron: 30 1 * * *
-  push:
-    branches: [ "main" ]
 
 jobs:
 
