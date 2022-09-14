@@ -7,6 +7,8 @@ import (
 )
 
 const (
+	TASK = 0 //0-Daily, 1-HealthCard
+
 	MAX_LOGIN_FAIL_TIMES = 3
 	MAX_POST_FAIL_TIMES  = 3
 )
@@ -49,7 +51,7 @@ func main() {
 	log.Println("Posting...")
 	var state int
 	var msg string
-	_, state, msg = post()
+	_, state, msg = post(TASK)
 	/*
 		state:
 			0-OK
@@ -58,39 +60,51 @@ func main() {
 			128-Unknow response
 			256-Connection error
 	*/
+	var task_title string
+	switch TASK{
+	case 0:
+		task_title = "Daily"
+	case 1:
+		task_title = "HealthCard"
+	default:
+		log.Println("Unknow task type. Exiting")
+		push_email(task_title,"[Error]Unknow task type. Exited")
+		os.Exit(5)
+	}
+
 	switch state {
 	case TASK_OK:
 		log.Println("Done")
-		push_email("XDUPILE HealthCard","Success")
+		push_email(task_title,"Success")
 	case TASK_ALREADT_DONE:
 		log.Println("Already done")
 	case TASK_NOT_LOGGED_IN:
 		log.Println("Fail: Not logged in. Exiting")
-		push_email("XDUPILE HealthCard","[Error]Unable to login. Exited")
+		push_email(task_title,"[Error]Unable to login. Exited")
 		os.Exit(3)
 	case TASK_UNKNOWN_RESPONSE:
 		log.Println("Unknown response: " + msg + ". Exiting")
-		push_email("XDUPILE HealthCard","[Error]Meet unknow response. Exited")
+		push_email(task_title,"[Error]Meet unknow response. Exited")
 		os.Exit(3)
 	case TASK_CONNECTION_ERROR:
 		try_time := 1
 		log.Printf("Fail: Connection error. Retrying(%d)...", try_time)
 		for {
 			try_time++
-			_, state, _ = post()
+			_, state, _ = post(TASK)
 			if state == TASK_OK {
 				break
 			}
 			if try_time >= MAX_POST_FAIL_TIMES {
 				log.Println("All trys failed. Exiting")
-				push_email("XDUPILE HealthCard","[Error]connection error. Exited")
+				push_email(task_title,"[Error]connection error. Exited")
 				os.Exit(4)
 			}
 			log.Printf("Fail. Retrying(%d)...", try_time)
 		}
 	default:
 		log.Println("[ERROR]Unknow response status. Check your code. Exiting")
-		push_email("XDUPILE HealthCard","[Error]System error: Unknow Status. Exited")
+		push_email(task_title,"[Error]System error: Unknow Status. Exited")
 		os.Exit(5)
 	}
 }

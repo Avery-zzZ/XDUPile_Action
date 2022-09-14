@@ -77,7 +77,7 @@ func login() (bool, error) {
 	}
 }
 
-func post() (bool, int, string) {
+func post(task int) (bool, int, string) {
 	const (
 		task_success_msg         = "{\"e\":0,\"m\":\"操作成功\",\"d\":{}}"
 		task_not_logged_in_msg_1 = "{\"e\": 10013,\"m\": \"用户信息已失效,请重新进入页面\",\"d\": {\"login_url\": \"https://xxcapp.xidian.edu.cn/uc/wap/login?redirect=https%3A%2F%2Fxxcapp.xidian.edu.cn%2Fncov%2Fwap%2Fdefault%2Findex\"}}"
@@ -85,10 +85,20 @@ func post() (bool, int, string) {
 		task_already_done_msg    = "{\"e\":1,\"m\":\"今天已经填报了\",\"d\":{}}"
 	)
 
-	body := []byte(os.Getenv("POST_BODY"))
+	var body []byte
+	var url string
+	switch task {
+	case 0:
+		body = []byte(os.Getenv("DAILY_POST_BODY"))
+		url = "https://xxcapp.xidian.edu.cn/xisuncov/wap/open-report/save"
+	case 1:
+		body = []byte(os.Getenv("POST_BODY"))
+		url = "https://xxcapp.xidian.edu.cn/ncov/wap/default/save"
+	}
+
 	request, err := http.NewRequest(
 		http.MethodPost,
-		"https://xxcapp.xidian.edu.cn/ncov/wap/default/save",
+		url,
 		bytes.NewBuffer(body),
 	)
 	if err != nil {
