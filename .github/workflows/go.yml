@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: 0 4,22 * * *
   push:
-    - branch: [ "main" ]
+    branch: [ "main" ]
 
 jobs:
 
