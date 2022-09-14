@@ -82,7 +82,8 @@ func post(task int) (bool, int, string) {
 		task_success_msg         = "{\"e\":0,\"m\":\"操作成功\",\"d\":{}}"
 		task_not_logged_in_msg_1 = "{\"e\": 10013,\"m\": \"用户信息已失效,请重新进入页面\",\"d\": {\"login_url\": \"https://xxcapp.xidian.edu.cn/uc/wap/login?redirect=https%3A%2F%2Fxxcapp.xidian.edu.cn%2Fncov%2Fwap%2Fdefault%2Findex\"}}"
 		task_not_logged_in_msg_2 = "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n    <head>\n        <meta name=\"description\" content=\"\">\n        <meta name=\"keywords\" conten"
-		task_already_done_msg    = "{\"e\":1,\"m\":\"今天已经填报了\",\"d\":{}}"
+		task_already_done_msg_1    = "{\"e\":1,\"m\":\"今天已经填报了\",\"d\":{}}"
+		task_already_done_msg_2    = "{\"e\":1,\"m\":\"您已上报过\",\"d\":{}}"
 	)
 
 	var body []byte
@@ -121,7 +122,8 @@ func post(task int) (bool, int, string) {
 
 		return true, TASK_OK, ""
 
-	} else if bytes.Equal(content, []byte(task_already_done_msg)) {
+	} else if bytes.Equal(content, []byte(task_already_done_msg_1)) ||
+		bytes.Equal(content, []byte(task_already_done_msg_2)) {
 
 		return true, TASK_ALREADT_DONE, ""
 
