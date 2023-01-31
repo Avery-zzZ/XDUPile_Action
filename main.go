@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	TASK = 0 //0-Daily, 1-HealthCard
+	TASK = 1 //0-Daily, 1-HealthCard
 
 	MAX_LOGIN_FAIL_TIMES = 3
 	MAX_POST_FAIL_TIMES  = 3
